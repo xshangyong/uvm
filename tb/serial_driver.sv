@@ -35,7 +35,7 @@ task serial_driver::main_phase(uvm_phase phase);
 		@(posedge v_seri_if.clk);
 	for(int i=0; i<2; i++) begin
 		ser_tr = new("ser_tr");
-		assert(ser_tr.randomize() with {pload.size == 200;});
+		assert(ser_tr.randomize() with {pload.size == 9;});
 		drive_one_packet(ser_tr);
 	end
    repeat(5) @(posedge v_seri_if.clk);

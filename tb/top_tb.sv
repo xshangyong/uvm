@@ -30,6 +30,8 @@ module top_tb;
 	
 	initial begin
 		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top.drv", "input_if_1", input_if);
+		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top.i_mon", "mon_if_1", input_if);
+		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top.o_mon", "mon_if_1", output_if);
 		run_test("serial_env");
 	end
 	
