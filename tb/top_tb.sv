@@ -4,6 +4,7 @@ import uvm_pkg::*;
 
 `include "serial_driver.sv"
 `include "serial_interface.sv"
+`include "serial_env.sv"
 
 module top_tb;
 	
@@ -28,8 +29,8 @@ module top_tb;
 	);
 	
 	initial begin
-		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top", "input_if_1", input_if);
-		run_test("serial_driver");
+		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top.drv", "input_if_1", input_if);
+		run_test("serial_env");
 	end
 	
 	
