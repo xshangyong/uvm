@@ -1,7 +1,5 @@
 `ifndef SERIAL_ENV
 `define SERIAL_ENV
-`include "serial_driver.sv"
-`include "serial_monitor.sv"
 
 class serial_env extends uvm_env;
 	serial_driver drv;

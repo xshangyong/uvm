@@ -1,7 +1,9 @@
 `ifndef SERIAL_DRIVER__SV
 `define SERIAL_DRIVER__SV
 `include "serial_transaction.sv"
+`include "global_package.sv"
 
+import global_package::*;
 class serial_driver extends uvm_driver;
 	`uvm_component_utils(serial_driver)
 	
@@ -33,9 +35,9 @@ task serial_driver::main_phase(uvm_phase phase);
 	v_seri_if.valid <= 1'b0;
 	while(!v_seri_if.rst_n)
 		@(posedge v_seri_if.clk);
-	for(int i=0; i<2; i++) begin
+	repeat(PACKAGE_DRIVE_NUM)begin
 		ser_tr = new("ser_tr");
-		assert(ser_tr.randomize() with {pload.size == 9;});
+		assert(ser_tr.randomize());  // with {ser_tr.pload.size==5;}
 		drive_one_packet(ser_tr);
 	end
    repeat(5) @(posedge v_seri_if.clk);
