@@ -6,6 +6,7 @@
 class serial_agent extends uvm_agent;
 	serial_driver drv;
 	serial_monitor mon;
+	uvm_analysis_port # (serial_transaction) ana_port;
 	function new(string name = "serial_agent", uvm_component parent);
 		super.new(name, parent);
 	endfunction
@@ -26,6 +27,7 @@ function void serial_agent::build_phase(uvm_phase phase);
 endfunction
 function void serial_agent::connect_phase(uvm_phase phase);	
 	super.connect_phase(phase);
+	ana_port = mon.ana_port;
 endfunction
 
 `endif	//SERIAL_AGENT

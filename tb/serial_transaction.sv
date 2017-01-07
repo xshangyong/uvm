@@ -27,6 +27,7 @@ class serial_transaction extends uvm_sequence_item;
 	endfunction
 	
 	extern function void print_data();
+	extern function void my_copy(serial_transaction tr);
 endclass
 
 function void  serial_transaction::print_data();
@@ -39,6 +40,16 @@ function void  serial_transaction::print_data();
 	$display("crc = %0h", crc);
 endfunction
 	
-
-
+function void  serial_transaction::my_copy(serial_transaction tr);
+	if(tr == null) begin
+		`uvm_fatal("serial_transaction", "tr is null!")
+	end
+	dmac = tr.dmac;
+	smac = tr.smac;
+	ether_type = tr.ether_type;
+	for(int i = 0; i < pload.size; i++) begin
+		pload[i] = tr.pload[i];
+	end
+	crc = tr.crc;
+endfunction
 `endif	//SERIAL_TRANSACTION

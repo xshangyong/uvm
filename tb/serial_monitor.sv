@@ -3,11 +3,10 @@
 `include "serial_transaction.sv"
 `include "global_package.sv"
 
-import global_package::*;
 
-class serial_monitor extends uvm_driver;
+class serial_monitor extends uvm_monitor;
 	`uvm_component_utils(serial_monitor)
-	
+	uvm_analysis_port # (serial_transaction) ana_port;
 	virtual serial_interface v_seri_if;
 	
 	function new(string name = "serial_monitor", uvm_component parent = null );
@@ -21,6 +20,7 @@ class serial_monitor extends uvm_driver;
 		if(!uvm_config_db#(virtual serial_interface)::get(this, "", "mon_if_1", v_seri_if))begin
 			`uvm_fatal("serial_monitor", "virtual interface must be set for serial_interface");
 		end
+		ana_port = new("ana_port", this);
 	endfunction
 	
 	extern  task main_phase(uvm_phase phase);
@@ -36,6 +36,7 @@ task serial_monitor::main_phase(uvm_phase phase);
 	while(1) begin
 		ser_tr = new("ser_tr");
 		collect_one_packet(ser_tr);
+		ana_port.write(ser_tr);
 	end
 endtask
 
