@@ -36,7 +36,7 @@ function void serial_env::connect_phase(uvm_phase phase);
 	super.connect_phase(phase);
 	i_agt.ana_port.connect(agt_mdl_fifo.analysis_export);
 	inst_ref_mod.get_port.connect(agt_mdl_fifo.blocking_get_export);
-	
+	 
 	inst_ref_mod.ana_port.connect(mdl_scb_fifo.analysis_export);
 	inst_scb.exp_port.connect(mdl_scb_fifo.blocking_get_export);
 	
