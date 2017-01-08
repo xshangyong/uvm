@@ -48,7 +48,8 @@ function void  serial_transaction::my_copy(serial_transaction tr);
 	dmac = tr.dmac;
 	smac = tr.smac;
 	ether_type = tr.ether_type;
-	for(int i = 0; i < pload.size; i++) begin
+	pload = new[tr.pload.size];
+	for(int i = 0; i < tr.pload.size; i++) begin
 		pload[i] = tr.pload[i];
 	end
 	crc = tr.crc;
