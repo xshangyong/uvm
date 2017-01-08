@@ -21,6 +21,7 @@ endclass
 		get_port = new("get_port", this);
 		ana_port = new("ana_port", this);
 	
+
 	endfunction
 	
 	task serial_refmod::main_phase(uvm_phase phase);

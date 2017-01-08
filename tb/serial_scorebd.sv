@@ -27,32 +27,36 @@ endclass
 		serial_transaction	get_expect, get_actual, tmp_tran;
 		bit result;
 		super.main_phase(phase);
-		while(1)begin
-			exp_port.get(get_expect);
-			expect_queue.push_back(get_expect);
-		end
-		
-		while(1)begin
-			act_port.get(get_actual);
-			if(expect_queue.size() > 0) begin
-				tmp_tran = expect_queue.pop_front();
-				result = get_actual.compare_all(tmp_tran);
-				if(result) begin
-					`uvm_info("serial_scorebd", "Compare SUCCESSFULLY", UVM_LOW);
+		fork
+			while(1)begin
+				exp_port.get(get_expect);
+				`uvm_info("serial_scorebd", "score board get 1 expect transaction", UVM_LOW);
+				expect_queue.push_back(get_expect);
+			end
+			
+			while(1)begin
+				act_port.get(get_actual);
+				`uvm_info("serial_scorebd", "score board get 1 actual transaction", UVM_LOW);
+				if(expect_queue.size() > 0) begin
+					tmp_tran = expect_queue.pop_front();
+					result = get_actual.compare_all(tmp_tran);
+					if(result) begin
+						`uvm_info("serial_scorebd", "Compare SUCCESSFULLY", UVM_LOW);
+					end
+					else begin
+					   `uvm_error("serial_scorebd", "Compare FAILED");
+					   $display("the expect pkt is");
+					   tmp_tran.print_data();
+					   $display("the actual pkt is");
+					   get_actual.print_data();
+					end
 				end
 				else begin
-				   `uvm_error("serial_scorebd", "Compare FAILED");
-				   $display("the expect pkt is");
-				   tmp_tran.print_data();
-				   $display("the actual pkt is");
-				   get_actual.print_data();
+					`uvm_error("serial_scorebd", "get actural pkt while expect pck queue is empty");
+					$display("the unexpected pkt is");
+					get_actual.print_data();
 				end
 			end
-			else begin
-				`uvm_error("serial_scorebd", "get actural pkt while expect pck queue is empty");
-				$display("the unexpected pkt is");
-				get_actual.print_data();
-			end
-		end
+		join
 	endtask
 `endif	//SERIAL_SCOREBD
