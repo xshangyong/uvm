@@ -58,7 +58,6 @@ task serial_monitor::collect_one_packet(serial_transaction ser_tr);
 		@(posedge v_seri_if.clk);
 	end
 	ser_tr.pload=new[data_q.size-18];
-	$display("data_q.size = %0d;\n ", data_q.size);
 
 	for(int i=0; i<6; i++) begin
 		ser_tr.dmac = {ser_tr.dmac[39:0], data_q.pop_front()};

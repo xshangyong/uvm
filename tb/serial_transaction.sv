@@ -28,6 +28,7 @@ class serial_transaction extends uvm_sequence_item;
 	
 	extern function void print_data();
 	extern function void my_copy(serial_transaction tr);
+	extern function bit compare_all(serial_transaction tr);
 endclass
 
 function void  serial_transaction::print_data();
@@ -52,4 +53,32 @@ function void  serial_transaction::my_copy(serial_transaction tr);
 	end
 	crc = tr.crc;
 endfunction
+
+function bit  serial_transaction::compare_all(serial_transaction tr);
+	bit result;
+	if(tr == null)begin
+         `uvm_fatal("serial_transaction", "tr is null!!!!")
+	end
+	else begin
+		result  =  	(crc == tr.crc) &&
+					(dmac == tr.dmac) &&
+					(smac == tr.smac) &&
+					(ether_type == tr.ether_type);
+		if(pload.size() != tr.pload.size())begin
+			result = 0;
+		end
+		else begin
+			for(int i = 0; i < pload.size(); i++)begin
+				if(pload[i] != tr.pload[i]) begin
+					result = 0;
+					break;
+				end
+			end
+		end
+		return result;
+	end
+endfunction
+
+
+
 `endif	//SERIAL_TRANSACTION
