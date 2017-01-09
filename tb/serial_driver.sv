@@ -4,7 +4,7 @@
 `include "global_package.sv"
 
 import global_package::*;
-class serial_driver extends uvm_driver;
+class serial_driver extends uvm_driver # (serial_transaction);
 	`uvm_component_utils(serial_driver)
 	
 	virtual serial_interface v_seri_if;
@@ -30,18 +30,15 @@ endclass
 	
 task serial_driver::main_phase(uvm_phase phase);
 	serial_transaction ser_tr;
-	phase.raise_objection(this);
 	v_seri_if.data <= 8'b0;
 	v_seri_if.valid <= 1'b0;
 	while(!v_seri_if.rst_n)
 		@(posedge v_seri_if.clk);
-	repeat(PACKAGE_DRIVE_NUM)begin
-		ser_tr = new("ser_tr");
-		assert(ser_tr.randomize());  // with {ser_tr.pload.size==5;}
-		drive_one_packet(ser_tr);
+	while(1)begin
+		seq_item_port.get_next_item(req);
+		drive_one_packet(req);
+		seq_item_port.item_done();
 	end
-   repeat(5) @(posedge v_seri_if.clk);
-   phase.drop_objection(this);
 endtask
 
 task serial_driver::drive_one_packet(serial_transaction ser_tr);

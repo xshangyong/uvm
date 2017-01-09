@@ -4,6 +4,7 @@
 `include "serial_refmod.sv"
 `include "serial_transaction.sv"
 `include "serial_scorebd.sv"
+`include "serial_sequence.sv"
 class serial_env extends uvm_env;
 	serial_agent i_agt;
 	serial_agent o_agt;
@@ -29,6 +30,7 @@ class serial_env extends uvm_env;
 		o_agt.is_active = UVM_PASSIVE;
 	endfunction
 	extern virtual function void connect_phase(uvm_phase phase);
+	extern  task main_phase(uvm_phase phase);	
 	`uvm_component_utils(serial_env)
 endclass
 
@@ -44,7 +46,13 @@ function void serial_env::connect_phase(uvm_phase phase);
 	inst_scb.act_port.connect(agt_scb_fifo.blocking_get_export);
 endfunction
 	
-	
+task serial_env::main_phase(uvm_phase phase);
+	serial_sequence seq;
+	phase.raise_objection(this);
+	seq = serial_sequence::type_id::create("seq");
+	seq.start(i_agt.sqr);
+	phase.drop_objection(this);
+endtask
 
 
 `endif	//SERIAL_ENV
