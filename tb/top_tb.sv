@@ -1,11 +1,18 @@
 `include "uvm_macros.svh"
-
 import uvm_pkg::*;
 
-`include "serial_driver.sv"
+`include "global_package.sv"
+`include "serial_transaction.sv"
+`include "serial_sequence.sv"
 `include "serial_interface.sv"
+`include "serial_driver.sv"
+`include "serial_monitor.sv"
+`include "serial_sequencer.sv"
+`include "serial_agent.sv"
+`include "serial_refmod.sv"
+`include "serial_scorebd.sv"
 `include "serial_env.sv"
-
+import global_package::*;
 module top_tb;
 	
 	reg 		clk;

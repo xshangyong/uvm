@@ -1,9 +1,6 @@
 `ifndef SERIAL_DRIVER__SV
 `define SERIAL_DRIVER__SV
-`include "serial_transaction.sv"
-`include "global_package.sv"
 
-import global_package::*;
 class serial_driver extends uvm_driver # (serial_transaction);
 	`uvm_component_utils(serial_driver)
 	

@@ -1,7 +1,5 @@
 `ifndef SERIAL_MONITOR
 `define SERIAL_MONITOR
-`include "serial_transaction.sv"
-`include "global_package.sv"
 
 
 class serial_monitor extends uvm_monitor;

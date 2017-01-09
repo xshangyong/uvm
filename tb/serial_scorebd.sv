@@ -1,6 +1,5 @@
 `ifndef SERIAL_SCOREBD
 `define SERIAL_SCOREBD
-`include "serial_transaction.sv"
 class serial_scorebd extends uvm_scoreboard;
 	serial_transaction expect_queue[$];
 	uvm_blocking_get_port # (serial_transaction) exp_port;

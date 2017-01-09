@@ -1,10 +1,5 @@
 `ifndef SERIAL_ENV
 `define SERIAL_ENV
-`include "serial_agent.sv"
-`include "serial_refmod.sv"
-`include "serial_transaction.sv"
-`include "serial_scorebd.sv"
-`include "serial_sequence.sv"
 class serial_env extends uvm_env;
 	serial_agent i_agt;
 	serial_agent o_agt;

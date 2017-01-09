@@ -1,6 +1,5 @@
 `ifndef SERIAL_SEQUENCE
 `define SERIAL_SEQUENCE
-`include "serial_transaction.sv"
 class serial_sequence extends uvm_sequence # (serial_transaction);
 	serial_transaction trans;
 	function new(string name = "serial_sequence");

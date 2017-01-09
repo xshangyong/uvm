@@ -1,8 +1,5 @@
 `ifndef SERIAL_AGENT
 `define SERIAL_AGENT
-`include "serial_driver.sv"
-`include "serial_monitor.sv"
-`include "serial_sequencer.sv"
 
 class serial_agent extends uvm_agent;
 	serial_driver drv;

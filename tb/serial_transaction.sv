@@ -1,5 +1,6 @@
 `ifndef SERIAL_TRANSACTION
 `define SERIAL_TRANSACTION
+
 class serial_transaction extends uvm_sequence_item;
 	rand bit[47:0]	dmac;
 	rand bit[47:0]	smac;
