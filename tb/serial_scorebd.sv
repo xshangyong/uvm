@@ -39,7 +39,7 @@ endclass
 				`uvm_info("serial_scorebd", "score board get 1 actual transaction", UVM_LOW);
 				if(expect_queue.size() > 0) begin
 					tmp_tran = expect_queue.pop_front();
-					result = get_actual.compare_all(tmp_tran);
+					result = get_actual.compare(tmp_tran);
 					if(result) begin
 						`uvm_info("serial_scorebd", "Compare SUCCESSFULLY", UVM_LOW);
 					end

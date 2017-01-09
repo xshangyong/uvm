@@ -41,46 +41,32 @@ task serial_monitor::main_phase(uvm_phase phase);
 endtask
 
 task serial_monitor::collect_one_packet(serial_transaction ser_tr);
-	bit[7:0]	data_q[$];
-	int 	psize;
+	byte unsigned	data_q[$];
+	byte unsigned	data_array[];
+	logic[7:0]	data;
+	logic 		valid=0;
+	int 		data_size;
+	int i=0;
 	while(1) begin
-		@(posedge v_seri_if.clk) begin
-			if(v_seri_if.valid) begin
-				break;
-			end
-		end
-	end
-		
+		@(posedge v_seri_if.clk);
+		if(v_seri_if.valid) break;
+	end	
 	`uvm_info("serial_monitor", "begin to collect one packet", UVM_LOW);
-	
 	while(v_seri_if.valid) begin
 		data_q.push_back(v_seri_if.data);
+		i++;
+//		uvm_report_info("serial_monitor", $sformatf("v_seri_if.data=%h, i=%d", v_seri_if.data, i), UVM_LOW);
 		@(posedge v_seri_if.clk);
 	end
-	ser_tr.pload=new[data_q.size-18];
-
-	for(int i=0; i<6; i++) begin
-		ser_tr.dmac = {ser_tr.dmac[39:0], data_q.pop_front()};
+	uvm_report_info("serial_monitor", $sformatf("data_size=%d", data_q.size()), UVM_LOW);
+	data_size = data_q.size();
+	data_array = new[data_size];
+	for(int i=0;i<data_size;i++) begin
+		data_array[i] = data_q[i];
 	end
-
-	for(int i=0; i<6; i++) begin
-		ser_tr.smac = {ser_tr.smac[39:0], data_q.pop_front()};
-	end
-
-	for(int i=0; i<2; i++) begin	
-		ser_tr.ether_type = {ser_tr.ether_type[7:0], data_q.pop_front()};
-	end
-	
-	for(int i=0; i<ser_tr.pload.size; i++) begin	
-		ser_tr.pload[i] = data_q.pop_front();
-	end
-
-	for(int i=0; i<4; i++) begin	
-		ser_tr.crc = {ser_tr.crc[23:0], data_q.pop_front()};
-	end
-
-	`uvm_info("serial_monitor", "end collect one packet", UVM_LOW);
-	ser_tr.print_data();
+	ser_tr.pload = new[data_size-18];
+	data_size = ser_tr.unpack_bytes(data_array)/8;
+	`uvm_info("serial_monitor", "end to collect one packet", UVM_LOW);
 endtask
 	
 `endif	//SERIAL_MONITOR

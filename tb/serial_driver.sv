@@ -46,46 +46,19 @@ endtask
 
 task serial_driver::drive_one_packet(serial_transaction ser_tr);
 	
-	bit[47:0]	tmp_data;
-	bit[7:0]	data_q[$];
-	
-	tmp_data = ser_tr.dmac;
-	for(int i=0; i<6; i++) begin
-		data_q.push_back(tmp_data[7:0]);
-		tmp_data = (tmp_data >> 8);
-	end
-	
-	tmp_data = ser_tr.smac;
-	for(int i=0; i<6; i++) begin
-		data_q.push_back(tmp_data[7:0]);
-		tmp_data = (tmp_data >> 8);
-	end
-	
-	tmp_data[15:0] = ser_tr.ether_type;
-	for(int i=0; i<2; i++) begin
-		data_q.push_back(tmp_data[7:0]);
-		tmp_data = (tmp_data >> 8);
-	end
-	
-	for(int i=0; i<ser_tr.pload.size; i++) begin
-		data_q.push_back(ser_tr.pload[i][7:0]);
-	end
-	
-	tmp_data[31:0] = ser_tr.crc;
-	for(int i=0; i<4; i++) begin
-		data_q.push_back(tmp_data[7:0]);
-		tmp_data = (tmp_data >> 8);
-	end
-	
+	byte unsigned data_q[];
+	int data_size;
+	int i;
+	data_size = ser_tr.pack_bytes(data_q) / 8;
 	`uvm_info("serial_driver", "begin to drive one packet", UVM_LOW);
-	
+	$display("driver, data_size = %d", data_size);
 	repeat(3) @(posedge v_seri_if.clk);
-	
-	while(data_q.size()>0)begin
+	for(i=0;i<data_size;i++) begin
 		@(posedge v_seri_if.clk);
 		v_seri_if.valid <= 1'b1;
-		v_seri_if.data <= data_q.pop_front();		
+		v_seri_if.data <= data_q[i];		
 	end
+	uvm_report_info("serial_monitor", $sformatf("driver, data sent i = %d", i), UVM_LOW);
 	@(posedge v_seri_if.clk);
 	v_seri_if.valid <= 1'b0;
 	`uvm_info("serial_driver", "end drive one packet", UVM_LOW);

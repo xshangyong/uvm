@@ -31,9 +31,9 @@ endclass
 		while(1)begin
 			get_port.get(tr);
 			new_tr = new("new_tr");
-			new_tr.my_copy(tr);
+			new_tr.copy(tr);
 			`uvm_info("serial_refmod", "get one transacion, copy and print it:", UVM_LOW);
-			new_tr.print_data();
+			new_tr.print();
 			ana_port.write(new_tr);
 		end
 	endtask

@@ -20,8 +20,13 @@ class serial_transaction extends uvm_sequence_item;
 		crc = calc_crc();	
 	endfunction
 	
-	`uvm_object_utils(serial_transaction);
-	
+	`uvm_object_utils_begin(serial_transaction)
+		`uvm_field_int(dmac, UVM_ALL_ON)
+		`uvm_field_int(smac, UVM_ALL_ON)
+		`uvm_field_int(ether_type, UVM_ALL_ON)
+		`uvm_field_array_int(pload, UVM_ALL_ON)
+		`uvm_field_int(crc, UVM_ALL_ON)
+	`uvm_object_utils_end
 	function new(string name = "serial_transaction");
 		super.new(name);
 	endfunction
