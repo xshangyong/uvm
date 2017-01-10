@@ -3,7 +3,7 @@
 all: comp run
 
 
-
+TEST_CASE = $(CASE)
 UVM_VERBOSITY =	UVM_LOW
 N_ERRS = 0
 N_FATALS = 0
@@ -17,7 +17,7 @@ VCS =	vcs -full64 -sverilog -timescale=1ns/1ns \
 			$(UVM_HOME)/src/dpi/uvm_dpi.cc \
 	
 
-SIMV = 	./simv +UVM_VERBOSITY=$(UVM_VERBOSITY) -l vcs.log
+SIMV = 	./simv +UVM_VERBOSITY=$(UVM_VERBOSITY) -l vcs.log +UVM_TESTNAME=$(TEST_CASE)
 
 URG  = urg -format text -dir simv.vdb
 

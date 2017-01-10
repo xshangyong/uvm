@@ -9,7 +9,7 @@ class serial_sequence extends uvm_sequence # (serial_transaction);
 		if(starting_phase != null) begin
 			starting_phase.raise_objection(this);
 		end		
-		repeat(2) begin
+		repeat(3) begin
 			`uvm_do(trans);
 		end
 		#1000;

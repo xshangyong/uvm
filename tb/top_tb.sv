@@ -13,6 +13,8 @@ import uvm_pkg::*;
 `include "serial_scorebd.sv"
 `include "serial_env.sv"
 `include "base_test.sv"
+`include "serial_case0.sv"
+`include "serial_case1.sv"
 import global_package::*;
 module top_tb;
 	
@@ -36,7 +38,7 @@ module top_tb;
 			.tx_en	(output_if.valid)
 	);
 	initial begin
-		run_test("base_test");
+		run_test();
 	end
 	initial begin
 		uvm_config_db#(virtual serial_interface)::set(null, "uvm_test_top.env.i_agt.drv", "input_if_1", input_if);
