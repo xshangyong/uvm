@@ -3,8 +3,8 @@
 class base_test extends uvm_test;
 	serial_env env;
 	
-	function new(string name == "base_test", uvm_component parent = null);
-		super.new(name, parent)
+	function new(string name = "base_test", uvm_component parent = null);
+		super.new(name, parent);
 	endfunction
 	
 	extern virtual function void build_phase(uvm_phase phase);
@@ -22,13 +22,12 @@ endclass
 												serial_sequence::type_id::get());
 	endfunction
 	
-	function void base_test::report_phase(uvm_phase phas);
+	function void base_test::report_phase(uvm_phase phase);
 		uvm_report_server server;
 		int err_num;
 		super.report_phase(phase);
-		server = get_repotr_server();
-		err_num = server.get_serverity_count(UVM_ERROR);
-		
+		server = get_report_server();
+		err_num = server.get_severity_count(UVM_ERROR);
 		if(err_num != 0) begin
 			$display("test case fail");
 		end
