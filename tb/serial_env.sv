@@ -23,7 +23,7 @@ class serial_env extends uvm_env;
 		inst_scb = serial_scorebd::type_id::create("inst_scb", this);
 		i_agt.is_active = UVM_ACTIVE;
 		o_agt.is_active = UVM_PASSIVE;
-		uvm_config_db # (uvm_object_wrapper)::set(this, "i_agt.sqr.main_phase", "default_sequence", serial_sequence::type_id::get());
+//		uvm_config_db # (uvm_object_wrapper)::set(this, "i_agt.sqr.main_phase", "default_sequence", serial_sequence::type_id::get());
 	
 	endfunction
 	extern virtual function void connect_phase(uvm_phase phase);
